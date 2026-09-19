@@ -27,8 +27,13 @@ public final class LoveBond extends JavaPlugin {
         MarriageCommand command = new MarriageCommand(this);
         getCommand("marry").setExecutor(command);
         getCommand("marry").setTabCompleter(command);
+        getCommand("sex").setExecutor(command);
+        getCommand("sex").setTabCompleter(command);
+        getCommand("lovepoints").setExecutor(command);
+        getCommand("lovepoints").setTabCompleter(command);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        marriageManager.startParticleTask();
 
         getLogger().info("LoveBond v" + getDescription().getVersion()
                 + " enabled! " + storage.getCoupleCount() + " couple(s) loaded.");

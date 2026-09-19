@@ -1,10 +1,10 @@
 name: LoveBond
-version: '1.0.0'
+version: '1.1.0'
 main: com.lovebond.LoveBond
 api-version: '1.13'
 author: LoveBond Team
 description: A marriage plugin - propose, marry, build a home together and more!
-website: https://github.com/your-username/LoveBond
+website: https://github.com/iAghaTraker/LoveBond
 
 commands:
   marry:
@@ -18,10 +18,34 @@ commands:
       /marry home                - Teleport to your shared home
       /marry hug                 - Hug your partner
       /marry kiss                - Kiss your partner
+      /marry tp                  - Teleport to your partner
+      /marry gift                - Gift the item in your hand to your partner
+      /marry chat                - Toggle private couple chat
+      /marry lovepoints          - Show your love points balance
+      /marry send <player> <amount> - Send love points to a player
+      /marry top                 - Show top 5 love point holders (admin)
       /marry stats               - Show your marriage info
       /marry list                - List all couples (admin)
       /marry reload              - Reload configs (admin)
     aliases: [marriage, love]
+    permission: lovebond.use
+
+  sex:
+    description: Hourly affection reward for couples
+    usage: /sex
+    aliases: [lovehour]
+    permission: lovebond.use
+
+  lovepoints:
+    description: Love points balance and management
+    usage: |
+      /lovepoints                - Show your balance
+      /lovepoints send <player> <amount> - Send love points
+      /lovepoints top            - Show top 5 holders (admin)
+      /lovepoints add <player> <amount> - Add points (admin)
+      /lovepoints take <player> <amount> - Take points (admin)
+      /lovepoints set <player> <amount> - Set points (admin)
+    aliases: [LovePoint, lp]
     permission: lovebond.use
 
 permissions:
@@ -29,5 +53,5 @@ permissions:
     description: Allows using the marry command
     default: true
   lovebond.admin:
-    description: Allows admin commands (list, reload, force divorce)
+    description: Allows admin commands (list, reload, force divorce, manage love points)
     default: op

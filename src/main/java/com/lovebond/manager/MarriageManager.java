@@ -8,15 +8,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class MarriageManager {
@@ -29,6 +35,10 @@ public class MarriageManager {
     private final Map<UUID, Long> proposalCooldowns = new HashMap<>();
     private final Map<UUID, Long> divorceCooldowns = new HashMap<>();
     private final Map<UUID, Integer> expirationTasks = new HashMap<>();
+    private final Map<UUID, Long> sexCooldowns = new HashMap<>();
+    private final Map<UUID, Long> tpCooldowns = new HashMap<>();
+    private final Set<UUID> coupleChat = new HashSet<>();
+    private boolean particleTaskStarted;
 
     public MarriageManager(LoveBond plugin) {
         this.plugin = plugin;
@@ -56,6 +66,17 @@ public class MarriageManager {
     public String getPartnerName(Player player) {
         UUID partner = getPartnerUuid(player.getUniqueId());
         return partner == null ? null : Bukkit.getOfflinePlayer(partner).getName();
+    }
+
+    /**
+     * Stable key for a couple, so caches (cooldowns etc.) are shared by both partners.
+     */
+    public UUID coupleKey(Player player) {
+        UUID partner = getPartnerUuid(player.getUniqueId());
+        if (partner == null) return player.getUniqueId();
+        return player.getUniqueId().toString().compareTo(partner.toString()) < 0
+                ? player.getUniqueId()
+                : partner;
     }
 
     // ------------------------------------------------------------------
@@ -307,6 +328,214 @@ public class MarriageManager {
                 "partner", Bukkit.getOfflinePlayer(partner).getName(),
                 "date", java.time.LocalDate.now().toString(),
                 "home", home);
+    }
+
+    // ------------------------------------------------------------------
+    // Hourly affection (/sex)
+    // ------------------------------------------------------------------
+
+    public boolean sex(Player player) {
+        if (!isMarried(player)) {
+            player.sendMessage(messages.format("not-married"));
+            return false;
+        }
+        UUID key = coupleKey(player);
+        long cooldownMinutes = plugin.getConfig().getLong("affection.cooldown-minutes", 60);
+        long cd = cooldownMinutes * 60_000L;
+        long last = sexCooldowns.getOrDefault(key, 0L);
+        long remaining = (last + cd - System.currentTimeMillis()) / 1000L;
+        if (remaining > 0) {
+            player.sendMessage(messages.format("sex-cooldown",
+                    "minutes", String.valueOf(Math.max(1, (remaining + 59) / 60))));
+            return false;
+        }
+
+        Player partner = getPartner(player);
+        String partnerName = partner != null ? partner.getName() : getPartnerName(player);
+        sexCooldowns.put(key, System.currentTimeMillis());
+
+        player.sendMessage(messages.format("sex-success", "partner", partnerName));
+        if (partner != null) {
+            partner.sendMessage(messages.format("sex-success-target", "player", player.getName()));
+        }
+        spawnHearts(player.getLocation());
+        rewardLove(player, partner);
+        return true;
+    }
+
+    private void rewardLove(Player player, Player partner) {
+        String mode = plugin.getConfig().getString("affection.reward-mode", "lovepoints");
+        int amount = plugin.getConfig().getInt("affection.reward-amount", 10);
+        String unit = plugin.getConfig().getString("lovepoints.points-name", "Love Points");
+        if (!mode.equalsIgnoreCase("command")) {
+            storage.addPoints(player.getUniqueId(), amount);
+            player.sendMessage(messages.format("sex-reward", "amount", String.valueOf(amount), "unit", unit));
+            if (partner != null) {
+                storage.addPoints(partner.getUniqueId(), amount);
+                partner.sendMessage(messages.format("sex-reward", "amount", String.valueOf(amount), "unit", unit));
+            }
+            storage.save();
+        } else {
+            giveCommandReward(player, amount);
+            if (partner != null) giveCommandReward(partner, amount);
+        }
+    }
+
+    private void giveCommandReward(Player player, int amount) {
+        String command = plugin.getConfig().getString("affection.reward-command", "eco give {player} {amount}")
+                .replace("{player}", player.getName())
+                .replace("{amount}", String.valueOf(amount));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        String unit = plugin.getConfig().getString("affection.reward-units", "Love Points");
+        player.sendMessage(messages.format("sex-reward", "amount", String.valueOf(amount), "unit", unit));
+    }
+
+    // ------------------------------------------------------------------
+    // Love points
+    // ------------------------------------------------------------------
+
+    public int points(Player player) {
+        return storage.getPoints(player.getUniqueId());
+    }
+
+    public boolean sendPoints(Player from, Player to, int amount) {
+        if (amount <= 0) return false;
+        int taken = storage.takePoints(from.getUniqueId(), amount);
+        if (taken <= 0) return false;
+        storage.addPoints(to.getUniqueId(), taken);
+        storage.save();
+        return true;
+    }
+
+    public boolean givePoints(Player target, int amount, String mode) {
+        if (amount <= 0) return false;
+        switch (mode.toLowerCase()) {
+            case "set" -> storage.setPoints(target.getUniqueId(), amount);
+            case "take" -> storage.takePoints(target.getUniqueId(), amount);
+            default -> storage.addPoints(target.getUniqueId(), amount);
+        }
+        storage.save();
+        return true;
+    }
+
+    public List<Map.Entry<UUID, Integer>> topPoints(int limit) {
+        List<Map.Entry<UUID, Integer>> list = new ArrayList<>(storage.getPointsMap().entrySet());
+        list.sort((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
+        return list.size() > limit ? list.subList(0, limit) : list;
+    }
+
+    // ------------------------------------------------------------------
+    // Teleport to partner
+    // ------------------------------------------------------------------
+
+    public boolean teleportToPartner(Player player) {
+        if (!plugin.getConfig().getBoolean("features.teleport-to-partner", true)) {
+            player.sendMessage(messages.format("feature-disabled"));
+            return false;
+        }
+        Player partner = getPartner(player);
+        if (partner == null) {
+            player.sendMessage(messages.format("tp-partner-offline"));
+            return false;
+        }
+        long cd = plugin.getConfig().getLong("features.teleport-to-partner-cooldown-seconds", 120) * 1000L;
+        long last = tpCooldowns.getOrDefault(player.getUniqueId(), 0L);
+        long remaining = (last + cd - System.currentTimeMillis()) / 1000L;
+        if (remaining > 0) {
+            player.sendMessage(messages.format("tp-cooldown", "seconds", String.valueOf(remaining)));
+            return false;
+        }
+        tpCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
+        player.teleport(partner.getLocation());
+        player.sendMessage(messages.format("tp-success", "partner", partner.getName()));
+        spawnHearts(player.getLocation());
+        return true;
+    }
+
+    // ------------------------------------------------------------------
+    // Gift
+    // ------------------------------------------------------------------
+
+    public boolean gift(Player player) {
+        if (!plugin.getConfig().getBoolean("features.gift", true)) {
+            player.sendMessage(messages.format("feature-disabled"));
+            return false;
+        }
+        Player partner = getPartner(player);
+        if (partner == null) {
+            player.sendMessage(messages.format("gift-partner-offline"));
+            return false;
+        }
+        ItemStack inHand = player.getInventory().getItemInMainHand();
+        if (inHand.getType() == Material.AIR) {
+            player.sendMessage(messages.format("gift-empty-hand"));
+            return false;
+        }
+        ItemStack gift = inHand.clone();
+        gift.setAmount(1);
+        inHand.setAmount(inHand.getAmount() - 1);
+
+        partner.getInventory().addItem(gift);
+        String name = inHand.getType().name().toLowerCase().replace('_', ' ');
+        player.sendMessage(messages.format("gift-sent",
+                "player", partner.getName(), "item", name));
+        partner.sendMessage(messages.format("gift-received",
+                "player", player.getName(), "item", name));
+        spawnHearts(partner.getLocation());
+        return true;
+    }
+
+    // ------------------------------------------------------------------
+    // Couple private chat
+    // ------------------------------------------------------------------
+
+    public boolean toggleCoupleChat(Player player) {
+        if (!plugin.getConfig().getBoolean("features.couple-private-chat", true)) {
+            player.sendMessage(messages.format("feature-disabled"));
+            return false;
+        }
+        if (!isMarried(player)) {
+            player.sendMessage(messages.format("not-married"));
+            return false;
+        }
+        if (coupleChat.add(player.getUniqueId())) {
+            player.sendMessage(messages.format("chat-enabled"));
+        } else {
+            coupleChat.remove(player.getUniqueId());
+            player.sendMessage(messages.format("chat-disabled"));
+        }
+        return true;
+    }
+
+    public boolean hasCoupleChat(UUID uuid) {
+        return coupleChat.contains(uuid);
+    }
+
+    // ------------------------------------------------------------------
+    // Heart particles when partners are close
+    // ------------------------------------------------------------------
+
+    public void startParticleTask() {
+        if (particleTaskStarted) return;
+        particleTaskStarted = true;
+        if (!plugin.getConfig().getBoolean("features.heart-particles-near-partner.enabled", true)) return;
+
+        int interval = plugin.getConfig().getInt("features.heart-particles-near-partner.interval-seconds", 4);
+        int maxDistance = plugin.getConfig().getInt("features.heart-particles-near-partner.max-distance", 8);
+
+        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (!isMarried(player)) continue;
+                Player partner = getPartner(player);
+                if (partner == null || !partner.isOnline()) continue;
+                if (!player.getWorld().equals(partner.getWorld())) continue;
+                if (player.getLocation().distance(partner.getLocation()) > maxDistance) continue;
+
+                Location mid = player.getLocation().clone()
+                        .add(partner.getLocation()).multiply(0.5).add(0, 2.2, 0);
+                mid.getWorld().spawnParticle(Particle.HEART, mid, 2, 0.2, 0.2, 0.2, 0);
+            }
+        }, 60L, Math.max(1, interval) * 20L);
     }
 
     // ------------------------------------------------------------------

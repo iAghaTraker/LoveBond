@@ -43,3 +43,55 @@ home:
   sync-teleport: true
   # Show particles where you teleport to.
   teleport-particles: true
+
+# ------------------------------------------------------------------
+#  Hourly affection (/sex)
+#  Married couples can run /sex once per cooldown and get rewarded.
+# ------------------------------------------------------------------
+affection:
+  # How often the reward can be claimed (in minutes). Default: 60 = hourly.
+  cooldown-minutes: 60
+
+  # What reward to give when a couple claims their love hour:
+  #   'lovepoints'  -> uses the built-in Love Points store below
+  #   'command'     -> runs a console command from ANY other plugin
+  #                    (economy, coins, tokens... whatever you want)
+  reward-mode: lovepoints
+  reward-amount: 10
+  # Name shown in reward messages (e.g. 'Love Points', 'Coins', 'Tokens').
+  reward-units: 'Love Points'
+
+  # If reward-mode is 'command', this console command is run for each partner.
+  # Placeholders: {player} = player name, {amount} = reward-amount
+  # Examples:
+  #   Vault/Essentials:   'eco give {player} {amount}'
+  #   CoinsEngine:        'coins give {player} {amount}'
+  #   TokenManager:       'tokens give {player} {amount}'
+  reward-command: 'eco give {player} {amount}'
+
+# ------------------------------------------------------------------
+#  Built-in Love Points (used when reward-mode is 'lovepoints')
+#  View with /marry lovepoints or /lovepoints
+# ------------------------------------------------------------------
+lovepoints:
+  points-name: 'Love Points'
+
+# ------------------------------------------------------------------
+#  Extra relationship features
+# ------------------------------------------------------------------
+features:
+  # /marry tp - teleport to your partner
+  teleport-to-partner: true
+  teleport-to-partner-cooldown-seconds: 120
+
+  # /marry gift - gift the item in your hand to your partner
+  gift: true
+
+  # /marry chat - private chat only your partner can see
+  couple-private-chat: true
+
+  # Heart particles whenever partners are close to each other
+  heart-particles-near-partner:
+    enabled: true
+    interval-seconds: 4
+    max-distance: 8

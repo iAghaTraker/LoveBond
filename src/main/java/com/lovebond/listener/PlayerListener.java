@@ -3,12 +3,14 @@ package com.lovebond.listener;
 import com.lovebond.LoveBond;
 import com.lovebond.gui.ProposalGUI;
 import com.lovebond.manager.MarriageManager;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -65,5 +67,23 @@ public class PlayerListener implements Listener {
         if (partner != null && partner.isOnline()) {
             partner.sendMessage(plugin.getMessages().format("partner-died", "player", player.getName()));
         }
+    }
+
+    @EventHandler
+    public void onAsyncChat(AsyncPlayerChatEvent event) {
+        MarriageManager manager = plugin.getMarriageManager();
+        if (!manager.hasCoupleChat(event.getPlayer().getUniqueId())) return;
+
+        Player partner = manager.getPartner(event.getPlayer());
+        if (partner == null || !partner.isOnline()) return;
+
+        event.setCancelled(true);
+        String format = plugin.getMessages().getRaw().getString(
+                "couple-chat-format", "&d[{player}] &7▸ &f{message}");
+        format = ChatColor.translateAlternateColorCodes('&', format)
+                .replace("{player}", event.getPlayer().getName())
+                .replace("{message}", event.getMessage());
+        event.getPlayer().sendMessage(format);
+        partner.sendMessage(format);
     }
 }

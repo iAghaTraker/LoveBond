@@ -70,6 +70,45 @@ not-married: '{prefix}&cYou are not married! Use &e/marry <player> &cto find you
 partner-joined: '&d{player} &7your partner just joined the server! <3'
 partner-died: '&c{player} &7your partner just died! &a&oRevenge?'
 
+# ---- Hourly affection (/sex) ----
+sex-cooldown: '{prefix}&cLove hour is on cooldown! Wait &e{minutes}m &cmore.'
+sex-success: '{prefix}&d&lLove hour! &7You spent a loving moment with &e{partner}&7! &d<3'
+sex-success-target: '{prefix}&d{player} &7spent a loving moment with you! &d<3'
+sex-reward: '{prefix}&aYou earned &e+{amount} {unit}&a!'
+
+# ---- Love points ----
+lovepoints-check: '{prefix}&7Your balance: &e{amount} &d{unit}&7.'
+lovepoints-sent: '{prefix}&aYou sent &e{amount} {unit} &ato &e{player}&a!'
+lovepoints-received: '{prefix}&e{player} &asent you &e{amount} {unit}&a!'
+lovepoints-insufficient: '{prefix}&cYou do not have enough {unit}&c!'
+lovepoints-invalid-amount: '{prefix}&cPlease enter a valid amount.'
+lovepoints-top-header: '&e=== &d&lTop Love Points &e==='
+lovepoints-top-row: '&7{rank}. &e{player} &7- &d{amount} &d❤'
+lovepoints-top-empty: '{prefix}&7Nobody has collected love points yet...'
+lovepoints-given: '{prefix}&aGave &e{player} &a+&e{amount} {unit}&a.'
+lovepoints-taken: '{prefix}&aTook &e{amount} {unit} &afrom &e{player}&a.'
+lovepoints-set: '{prefix}&aSet &e{player}&a''s balance to &e{amount} {unit}&a.'
+lovepoints-usage: '{prefix}&7Usage: &e/lovepoints [send <player> <amount>] [top]&7. Admins: &eadd|take|set <player> <amount>'
+
+# ---- Teleport to partner ----
+tp-success: '{prefix}&aYou teleported next to &e{partner}&a! &d<3'
+tp-cooldown: '{prefix}&cTeleport is on cooldown! Wait &e{seconds}s &cmore.'
+tp-partner-offline: '{prefix}&cYour partner is offline.'
+
+# ---- Gift ----
+gift-sent: '{prefix}&7You gifted &e{player} &7a &e{item}&7!'
+gift-received: '&d{player} &7gifted you a &e{item}&7!'
+gift-empty-hand: '{prefix}&cHold an item in your hand to gift it.'
+gift-partner-offline: '{prefix}&cYour partner is offline.'
+
+# ---- Couple private chat ----
+chat-enabled: '{prefix}&aPrivate couple chat &aenabled&a. Only your partner sees your messages.'
+chat-disabled: '{prefix}&cPrivate couple chat &cdisabled&c.'
+couple-chat-format: '&d[{player}] &7▸ &f{message}'
+
+# ---- Generic ----
+feature-disabled: '{prefix}&cThis feature is disabled on this server.'
+
 # ---- Admin / Errors ----
 player-not-found: '{prefix}&cPlayer &e{player} &cnot found.'
 no-permission: '{prefix}&cYou do not have permission to do that.'

@@ -67,6 +67,45 @@ not-married: '{prefix}&cتو ازدواج نکرده‌ای! با &e/marry <play
 partner-joined: '&d{player} &7همسرت وارد سرور شد! <3'
 partner-died: '&c{player} &7همسرت مرد! &a&oانتقام می‌گیری؟'
 
+# ---- عشق‌بازی ساعتی (/sex) ----
+sex-cooldown: '{prefix}&cساعت عشق هنوز فعال نشده! &e{minutes} &cدقیقه دیگر صبر کن.'
+sex-success: '{prefix}&d&lساعت عشق! &7لحظه‌ای عاشقانه با &e{partner} &7داشتی! &d<3'
+sex-success-target: '{prefix}&d{player} &7لحظه‌ای عاشقانه با تو داشت! &d<3'
+sex-reward: '{prefix}&aجایزه گرفتی: &e+{amount} {unit}&a!'
+
+# ---- پوینت عشق ----
+lovepoints-check: '{prefix}&7موجودی تو: &e{amount} &d{unit}&7.'
+lovepoints-sent: '{prefix}&aتو &e{amount} {unit} &aبه &e{player} &aفرستادی!'
+lovepoints-received: '{prefix}&e{player} &aبه تو &e{amount} {unit} &aفرستاد!'
+lovepoints-insufficient: '{prefix}&cبه اندازه کافی {unit} &cنداری!'
+lovepoints-invalid-amount: '{prefix}&cعدد معتبری وارد کن.'
+lovepoints-top-header: '&e=== &d&lبرترین‌های پوینت عشق &e==='
+lovepoints-top-row: '&7{rank}. &e{player} &7- &d{amount} &d❤'
+lovepoints-top-empty: '{prefix}&7هنوز کسی پوینت عشق جمع نکرده...'
+lovepoints-given: '{prefix}&aبه &e{player} &aمقدار &e+{amount} {unit} &aدادی.'
+lovepoints-taken: '{prefix}&aاز &e{player} &aمقدار &e{amount} {unit} &aگرفتی.'
+lovepoints-set: '{prefix}&aموجودی &e{player} &aبه &e{amount} {unit} &aتنظیم شد.'
+lovepoints-usage: '{prefix}&7نحوه استفاده: &e/lovepoints [send <player> <amount>] [top]&7. ادمین‌ها: &eadd|take|set <player> <amount>'
+
+# ---- تلپورت به همسر ----
+tp-success: '{prefix}&aکنار &e{partner} &aتلپورت شدی! &d<3'
+tp-cooldown: '{prefix}&cتلپورت در کول‌داون است! &e{seconds} &cثانیه دیگر صبر کن.'
+tp-partner-offline: '{prefix}&cهمسرت آفلاین است.'
+
+# ---- هدیه ----
+gift-sent: '{prefix}&7تو یک &e{item} &7به &e{player} &7هدیه دادی!'
+gift-received: '&d{player} &7به تو یک &e{item} &7هدیه داد!'
+gift-empty-hand: '{prefix}&cبرای هدیه دادن، یک آیتم در دستت بگیر.'
+gift-partner-offline: '{prefix}&cهمسرت آفلاین است.'
+
+# ---- چت خصوصی زوج ----
+chat-enabled: '{prefix}&aچت خصوصی زوج &aفعال&a شد. فقط همسرت پیام‌هایت را می‌بیند.'
+chat-disabled: '{prefix}&cچت خصوصی زوج &cغیرفعال&c شد.'
+couple-chat-format: '&d[{player}] &7◂ &f{message}'
+
+# ---- عمومی ----
+feature-disabled: '{prefix}&cاین قابلیت روی این سرور غیرفعال است.'
+
 # ---- ادمین / خطا ----
 player-not-found: '{prefix}&cبازیکن &e{player} &cپیدا نشد.'
 no-permission: '{prefix}&cتو اجازه‌ی انجام این کار را نداری.'
