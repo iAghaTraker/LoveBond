@@ -132,4 +132,3 @@ This project is licensed under the [MIT License](LICENSE). Free to use, modify a
 
 ---
 
-Made with ❤️ for Minecraft servers everywhere.
