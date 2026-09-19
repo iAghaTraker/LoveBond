@@ -1,0 +1,76 @@
+# ------------------------------------------------------------------
+#  پیام‌های فارسی LoveBond
+#  برای استفاده: صرفاً محتوای همین فایل را داخل messages.yml کپی کنید
+#  (یا کلیدهای دلخواه را در messages.yml جایگزین کنید)
+#  برای رنگ و فونت، از کدهای & استفاده کنید. بسته به رایانهٔ بازیکن،
+#  نمایش حروف فارسی به فونت و نسخهٔ کلاینت بستگی دارد.
+#  -----------------------------------------------------------------
+prefix: '&d&l[&5عشق پیوند&d&l] &r'
+
+# ---- پیشنهاد ----
+proposal-sent: '{prefix}&7پیشنهاد ازدواجت برای &e{player} &7ارسال شد!'
+proposal-sent-gui: '{prefix}&e{player} &7به تو پیشنهاد ازدواج داده! بنویس &a/marry accept &7یا از منو استفاده کن.'
+proposal-already-sent: '{prefix}&cتو همین الان یک پیشنهاد در انتظار داری!'
+proposal-target-married: '{prefix}&c{player} &cاز قبل ازدواج کرده!'
+proposal-self: '{prefix}&cنمی‌توانی با خودت ازدواج کنی!'
+proposal-already-married: '{prefix}&cتو قبلاً با &e{partner} &cازدواج کرده‌ای!'
+proposal-expired: '{prefix}&cپیشنهاد &e{player} &cمنقضی شد.'
+proposal-target-offline: '{prefix}&c{player} &cآفلاین است.'
+proposal-no-pending: '{prefix}&cهیچ پیشنهادی در انتظار نداری.'
+proposal-cooldown: '{prefix}&cباید &e{seconds} &cثانیه صبر کنی تا دوباره پیشنهاد بدهی.'
+
+# ---- پذیرش / رد ----
+marriage-announce: '{prefix}&d{player1} &7و &d{player2} &7با هم ازدواج کردند! &d&lتبریک! &a&oتا ابد عاشقانه کنار هم بمانند!'
+proposal-accepted: '{prefix}&7تو با &e{player} &7ازدواج کردی! &d&lتبریک! &a&oزندگی شادتان!'
+proposal-accepted-target: '{prefix}&e{player} &7پیشنهاد تو را پذیرفت! &d&lتبریک!'
+proposal-denied: '{prefix}&7پیشنهاد &e{player} &7را رد کردی.'
+proposal-denied-target: '{prefix}&c{player} &7پیشنهاد تو را رد کرد!'
+
+# ---- طلاق ----
+divorce-success: '{prefix}&7تو از &e{player} &7جدا شدی. صبرت را می‌خواهیم...'
+divorce-success-target: '{prefix}&7تو از &e{player} &7جدا شدی.'
+divorce-cooldown: '{prefix}&cهنوز نمی‌توانی طلاق بگیری! &e{seconds} &cثانیه دیگر صبر کن.'
+divorce-not-married: '{prefix}&cتو ازدواج نکرده‌ای!'
+divorce-admin-force: '{prefix}&6ادمین بین &e{player1} &6و &e{player2} &6طلاق اجباری برقرار کرد.'
+
+# ---- خانه ----
+home-set: '{prefix}&aخانه‌ی مشترک ثبت شد! برای تلپورت بنویس &e/marry home&a.'
+home-not-set: '{prefix}&cهنوز خانه‌ی مشترکی ثبت نشده. بنویس &e/marry sethome&c.'
+home-teleported: '{prefix}&aبه خانه‌ی عشق‌آباد تلپورت شدی!'
+home-sync-teleport: '{prefix}&aهمسرت هم با تو جابه‌جا شد.'
+
+# ---- آمار ----
+stats-single: '{prefix}&7تو &eمجردی&7. با &e/marry <player> &7به آن پایان بده!'
+stats-married: |
+  {prefix}&e=== &d&lزنجیرهٔ ازدواج تو &e===
+  {prefix}&7همسر: &e{partner}
+  {prefix}&7خانه: &e{home}
+
+# ---- لیست (ادمین) ----
+list-header: '&e=== &d&lزوج‌های ازدواج‌کرده &e==='
+list-empty: '{prefix}&7هنوز زوجی نیست... برو عشق پیدا کن!'
+list-row: '&7- &e{player1} &7و &e{player2}'
+
+# ---- دستورهای جالب ----
+hug-sent: '{prefix}&7تو &e{player} &7را بغل کردی. &c&lآه! &d<3'
+hug-received: '&d{player} &7تو را بغل کرد! <3'
+kiss-sent: '{prefix}&7تو &e{player} &7را بوسیدی! &d&l....&c&l*خجالت*'
+kiss-received: '&d{player} &7تو را بوسید! &d&l<3'
+fun-too-far: '{prefix}&cهمسرت خیلی دور است (&e{distance}m &c/ &e{max}m&c)!'
+fun-not-married: '{prefix}&cبرای این کار به همسر نیاز داری! بنویس &e/marry <player>&c.'
+fun-disabled: '{prefix}&cدستورهای عشقی روی این سرور غیرفعال است.'
+
+# ---- ازدواج نکرده ----
+not-married: '{prefix}&cتو ازدواج نکرده‌ای! با &e/marry <player> &cهم‌نیمه‌ات را پیدا کن.'
+
+# ---- رویدادهای همسر ----
+partner-joined: '&d{player} &7همسرت وارد سرور شد! <3'
+partner-died: '&c{player} &7همسرت مرد! &a&oانتقام می‌گیری؟'
+
+# ---- ادمین / خطا ----
+player-not-found: '{prefix}&cبازیکن &e{player} &cپیدا نشد.'
+no-permission: '{prefix}&cتو اجازه‌ی انجام این کار را نداری.'
+config-reloaded: '{prefix}&aتنظیمات با موفقیت بارگذاری مجدد شد!'
+only-players: '{prefix}&cفقط بازیکنان داخل بازی می‌توانند این دستور را اجرا کنند.'
+usage-propose: '{prefix}&7نحوهٔ استفاده: &e/marry <player>'
+error: '{prefix}&cخطایی رخ داد: &e{error}'

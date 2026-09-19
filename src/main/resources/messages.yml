@@ -1,0 +1,79 @@
+# ------------------------------------------------------------------
+#  LoveBond messages
+#  Use & followed by a color/format code (&e, &6, &l, ^) for colors.
+#  Placeholders:
+#    {player}  <name of the target player>
+#    {partner} <name of your partner>
+#  -----------------------------------------------------------------
+prefix: '&d&l[&5LoveBond&d&l] &r'
+
+# ---- Proposals ----
+proposal-sent: '{prefix}&7You sent a marriage proposal to &e{player}&7!'
+proposal-sent-gui: '{prefix}&e{player} &7sent you a marriage proposal! Type &a/marry accept &7or open the GUI.'
+proposal-target-ledger-title: '&dMarriage Proposal'
+proposal-already-sent: '{prefix}&cYou already have a pending proposal!'
+proposal-target-married: '{prefix}&c{player} &cis already married!'
+proposal-self: '{prefix}&cYou cannot marry yourself!'
+proposal-cannot-pick-this-player: '{prefix}&cYou cannot marry this player!'
+proposal-already-married: '{prefix}&cYou are already married to &e{partner}&c!'
+proposal-expired: '{prefix}&cThe proposal from &e{player} &cexpired.'
+proposal-target-offline: '{prefix}&c{player} &cis offline.'
+proposal-no-pending: '{prefix}&cYou have no pending proposals.'
+proposal-cooldown: '{prefix}&cYou must wait &e{seconds}s &cbefore sending another proposal.'
+
+# ---- Accept / Deny ----
+marriage-announce: '{prefix}&d{player1} &7& &d{player2} &7just got married! &d&lCongrats! &a&oMay their love last forever!'
+proposal-accepted: '{prefix}&7You married &e{player}&7! &d&lCongrats! &a&oHappy life together!'
+proposal-accepted-target: '{prefix}&e{player} &7accepted your proposal! &d&lCongrats!'
+proposal-denied: '{prefix}&7You denied the proposal from &e{player}&7.'
+proposal-denied-target: '{prefix}&c{player} &7denied your proposal!'
+
+# ---- Divorce ----
+divorce-success: '{prefix}&7You divorced &e{player}&7. It happens...'
+divorce-success-target: '{prefix}&7You divorced &e{player}&7.'
+divorce-cooldown: '{prefix}&cYou cannot divorce yet! Wait &e{seconds}s &cmore.'
+divorce-not-married: '{prefix}&cYou are not married!'
+divorce-admin-force: '{prefix}&6You forced a divorce between &e{player1} &6and &e{player2}&6.'
+
+# ---- Home ----
+home-set: '{prefix}&aShared home set! Use &e/marry home &ato teleport.'
+home-not-set: '{prefix}&cNo shared home has been set yet. Use &e/marry sethome&c.'
+home-teleported: '{prefix}&aTeleported to your shared love nest!'
+home-sync-teleport: '{prefix}&aYour partner was moved with you.'
+
+# ---- Stats ----
+stats-single: '{prefix}&7You are &esignle&7. Type &e/marry <player> &7to change that!'
+stats-married: |
+  {prefix}&e=== &d&lYour Marriage &e===
+  {prefix}&7Partner: &e{partner}
+  {prefix}&7Married since: &e{date}
+  {prefix}&7Shared home: &e{home}
+
+# ---- List (admin) ----
+list-header: '&e=== &d&lMarried Couples &e==='
+list-empty: '{prefix}&7No couples yet... go find love!'
+list-row: '&7- &e{player1} &7& &e{player2}'
+
+# ---- Fun commands ----
+hug-sent: '{prefix}&7You hugged &e{player}&7. &c&lAw! &d<3'
+hug-received: '&d{player} &7just hugged you! <3'
+kiss-sent: '{prefix}&7You kissed &e{player}&7! &d&l....&c&l*blush*'
+kiss-received: '&d{player} &7just kissed you! &d&l<3'
+fun-too-far: '{prefix}&cYour partner is too far away (&e{distance}m&c / &e{max}m&c)!'
+fun-not-married: '{prefix}&cYou need a partner for this! Use &e/marry <player>&c.'
+fun-disabled: '{prefix}&cFun commands are disabled on this server.'
+
+# ---- Not married ----
+not-married: '{prefix}&cYou are not married! Use &e/marry <player> &cto find your soulmate.'
+
+# ---- Partner events ----
+partner-joined: '&d{player} &7your partner just joined the server! <3'
+partner-died: '&c{player} &7your partner just died! &a&oRevenge?'
+
+# ---- Admin / Errors ----
+player-not-found: '{prefix}&cPlayer &e{player} &cnot found.'
+no-permission: '{prefix}&cYou do not have permission to do that.'
+config-reloaded: '{prefix}&aConfig reloaded successfully!'
+only-players: '{prefix}&cOnly in-game players can use this command.'
+usage-propose: '{prefix}&7Usage: &e/marry <player>'
+error: '{prefix}&cSomething went wrong: &e{error}'

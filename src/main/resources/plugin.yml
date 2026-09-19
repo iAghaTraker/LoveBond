@@ -1,0 +1,33 @@
+name: LoveBond
+version: '1.0.0'
+main: com.lovebond.LoveBond
+api-version: '1.13'
+author: LoveBond Team
+description: A marriage plugin - propose, marry, build a home together and more!
+website: https://github.com/your-username/LoveBond
+
+commands:
+  marry:
+    description: Main marriage command
+    usage: |
+      /marry <player>            - Propose marriage
+      /marry accept              - Accept a proposal
+      /marry deny                - Deny a proposal
+      /marry divorce             - Divorce your partner
+      /marry sethome             - Set your shared home
+      /marry home                - Teleport to your shared home
+      /marry hug                 - Hug your partner
+      /marry kiss                - Kiss your partner
+      /marry stats               - Show your marriage info
+      /marry list                - List all couples (admin)
+      /marry reload              - Reload configs (admin)
+    aliases: [marriage, love]
+    permission: lovebond.use
+
+permissions:
+  lovebond.use:
+    description: Allows using the marry command
+    default: true
+  lovebond.admin:
+    description: Allows admin commands (list, reload, force divorce)
+    default: op

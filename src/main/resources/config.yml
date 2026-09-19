@@ -1,0 +1,45 @@
+# ------------------------------------------------------------------
+#  LoveBond configuration
+#  All message texts live in messages.yml (edit them there)
+# ------------------------------------------------------------------
+
+settings:
+  # Time (in seconds) a player must wait before getting divorced.
+  divorce-cooldown-seconds: 300
+
+  # Announce new marriages to the whole server.
+  announce-marriage-globally: true
+
+  # Add a joining cooldown so spammy proposals are blocked.
+  proposal-cooldown-seconds: 30
+
+  # How long (seconds) a proposal stays pending before expiring.
+  proposal-expire-seconds: 60
+
+  # ---------- Fun commands (/marry hug & /marry kiss) ----------
+  enable-fun-commands: true
+  # Hug/kiss only works if partners are within this many blocks.
+  hug-kiss-max-distance: 25
+
+  # ---------- Effects ----------
+  effects:
+    # Spawn fireworks when a couple gets married.
+    marriage-fireworks: true
+    # Give regeneration for N seconds after marrying.
+    marriage-regeneration-seconds: 15
+
+  # ---------- GUI ----------
+  gui:
+    size: 27
+    title: '&d&lMarriage Proposal'
+    accept-item: LIME_DYE
+    deny-item: RED_DYE
+    info-item: DIAMOND
+    filler-item: GRAY_STAINED_GLASS_PANE
+
+# Home teleport settings
+home:
+  # Teleport one partner away -> other also gets moved? (never leave one behind)
+  sync-teleport: true
+  # Show particles where you teleport to.
+  teleport-particles: true
